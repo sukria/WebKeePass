@@ -10,6 +10,7 @@ This module is here to wrap all the access knowledge to the KeePass database.
 use Moo;
 use Carp 'croak'; 
 use File::KeePass;
+use DateTime;
 
 =attr db_file 
 
@@ -86,6 +87,39 @@ sub _build_entries {
     }
 
     return \@entries;
+}
+
+
+=attr stats
+
+HashRef with stats info about the DB file
+
+=cut
+
+has stats => (
+    is      => 'rw',
+    lazy => 1,
+    builder => '_build_stats', 
+);
+
+sub _build_stats {
+    my ($self) = @_;
+    my $raw =$self->keepass->header;
+
+    my @stat = stat( $self->db_file );
+    my $dt = DateTime->from_epoch( epoch => $stat[9] );
+    my $last_modified = $dt->ymd('-').' '.$dt->hms(':');
+    
+    return {
+        version => $raw->{version},
+        generator => $raw->{generator},
+        name    => $raw->{database_name},
+        key_updated_at => $raw->{master_key_changed},
+        last_modified => $last_modified,
+        encoding => $raw->{enc_type},
+        cipher => $raw->{cipher},
+        entries => scalar(@{ $self->entries }),
+    };
 }
 
 1;

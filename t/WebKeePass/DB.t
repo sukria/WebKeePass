@@ -21,31 +21,49 @@ my $entries = $db->entries;
 is_deeply $entries,
   [
     {
+        id       => 1,
         title    => 'Google Account',
         username => 'johnnywalker@gmail.com',
         password => 'ph32IklTK93ceV5TRe2U'
     },
     {
+        id       => 2,
         title    => 'Twitter',
         username => 'johnnywalker',
         password => 'HmiEBZMBGeMDTAvFMVKE'
     },
     {
+        id       => 3,
         title    => 'Facebook',
         username => 'johnny.walker',
         password => 'cvVYIICJ0qz5MIFiu5yd'
     },
     {
+        id       => 4,
         title => 'Sample Entry',
         username => 'User Name',
         password => 'Password',
     },
     {
+        id       => 5,
         title => 'Sample Entry #2',
         username => 'Michael321',
         password => '12345',
     },
   ],
   "Entries are fetched";
+
+is_deeply $db->stats,
+  {
+    version        => 2,
+    last_modified  => '2013-02-16 14:38:08',
+    key_updated_at => '2013-02-16 14:36:52',
+    name           => 'Test Database KeePass2',
+    entries        => 5,
+    generator      => 'KeePass',
+    cipher         => 'aes',
+    encoding       => 'rijndael',
+  },
+  "stats look fine";
 
 done_testing;
