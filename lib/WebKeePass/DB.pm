@@ -68,8 +68,8 @@ sub _build_entries {
     my @entries;
 
     my $count = 0;
-    foreach my $group (map { $_->{groups} } @{ $groups }) {
-        foreach my $entry (map { @{ $_->{entries} } } @{ $group }) {
+    foreach my $group (map { $_->{groups} || [$_] } @{ $groups }) {
+        foreach my $entry (map { @{ $_->{entries} || [] } } @{ $group }) {
 
             my ( $title, $username, $password ) =
               ( $entry->{title}, $entry->{username}, $entry->{password} );
