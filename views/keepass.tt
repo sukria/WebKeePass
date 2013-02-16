@@ -1,0 +1,7 @@
+[% FOREACH e IN entries %]
+<div>
+  [% e.title %]
+  [% e.username %]
+  [% e.password %]
+</div>
+[% END %]

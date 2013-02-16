@@ -61,9 +61,6 @@ sub entries {
     my $groups = $self->keepass->groups;
     my @entries;
 
-use Data::Dumper;
-#print Dumper($groups);
-
     foreach my $group (map { $_->{groups} } @{ $groups }) {
         foreach my $entry (map { @{ $_->{entries} } } @{ $group }) {
 

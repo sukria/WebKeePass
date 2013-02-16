@@ -1,3 +1,6 @@
 logger: "console"
 log: "debug"
 show_errors: 1
+session: "Simple"
+application:
+  db_file: './t/Test.kdbx'

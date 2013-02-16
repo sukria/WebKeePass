@@ -1,0 +1,16 @@
+     
+      <form method="post" action="/keepass" class="form-signin">
+ 
+      [% IF flash %]
+      <div class="alert alert-error">
+      [% flash %]
+      </div>
+      [% END %]
+
+        <h2 class="form-signin-heading">KeePass</h2>
+        <input name="password" type="password" class="input-block-level" placeholder="Password">
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit">Unlock</button>
+      </form>
