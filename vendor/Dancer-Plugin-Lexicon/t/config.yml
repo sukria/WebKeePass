@@ -1,0 +1,11 @@
+plugins:
+  Lexicon:
+    namespace:      MyApp::Lexicon
+    path:           languages
+    auto_detect:    1
+    default:        fr
+    func:           [l, _]
+    session_name:   lang
+    param_name:     lang
+    langs:
+      fr:       "Français"

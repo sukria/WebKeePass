@@ -1,0 +1,43 @@
+appname: AudienceAnalytics
+traces: 1
+charset: 'UTF8'
+content_type: "text/html"
+template: "template_toolkit"
+
+engines:
+  template:
+    template_toolkit:
+      ENCODING: 'utf-8'
+  serializer:
+    json:
+      pretty: 1
+
+# WORKAROUND NO DATA FOR TODAY
+application:
+  is_debugging_mode: 0
+  force_params:
+    day: 20130109
+
+plugins:
+
+  Email:
+    headers:
+      from: 'noreply@weborama.com'
+      X-Mailer: 'Dancer-Plugin-Email (Dancer 2.0)'
+      X-Accept-Language: 'en'
+    # Explicity set a transport (OPTIONAL)
+    transport:
+      Sendmail:
+        sendmail: '/usr/sbin/sendmail'
+
+  Lexicon:
+    namespace:      "AudienceAnalytics::Lexicon"
+    path:           "languages"
+    auto_detect:    0
+    default:        "en"
+    func:           [l, _]
+    session_name:   "lang"
+    param_name:     "lang"
+    langs:
+      en:    "English"
+      fr:    "Français"

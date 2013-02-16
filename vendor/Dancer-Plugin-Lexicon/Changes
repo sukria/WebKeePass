@@ -1,0 +1,15 @@
+0.05    2012-08-06
+        Renamed Changes.txt to Changes - it wasn't being included by dzil
+
+0.04    2012-07-30
+        More doc fixes. Thanks to BIGPRESH
+
+0.03    2012-07-30
+        Doc fix. lang_tag is actually exported as language_tag
+
+0.02    2012-07-26
+        Added a check on initialization for 'appdir' to avoid generating errors
+        in Eclipse.
+
+0.01    2012-07-25
+        First release
