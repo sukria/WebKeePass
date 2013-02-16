@@ -49,29 +49,39 @@ sub load_db {
 }
 
 
-=method entries
+=attr entries
 
 Retreive all the entries in the DB that have a title, a username and a password
 
 =cut
 
-sub entries {
+has entries => (
+    is => 'rw',
+    lazy => 1,
+    builder => '_build_entries',
+);
+
+sub _build_entries {
     my ($self) = @_;
 
     my $groups = $self->keepass->groups;
     my @entries;
 
+    my $count = 0;
     foreach my $group (map { $_->{groups} } @{ $groups }) {
         foreach my $entry (map { @{ $_->{entries} } } @{ $group }) {
 
             my ( $title, $username, $password ) =
               ( $entry->{title}, $entry->{username}, $entry->{password} );
 
-            push @entries, {
-                title => $title,
+            push @entries,
+              {
+                id       => ++$count,
+                title    => $title,
                 username => $username,
                 password => $password,
-            } if defined $title && defined $username && defined $password;
+              }
+              if defined $title && defined $username && defined $password;
         }
     }
 

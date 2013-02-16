@@ -1,7 +1,39 @@
-[% FOREACH e IN entries %]
-<div>
-  [% e.title %]
-  [% e.username %]
-  [% e.password %]
-</div>
-[% END %]
+
+   <div class="page-header" 
+        style="height: 320px; background: url(/images/keepass_logo.png) no-repeat top left; margin-top:30px; padding-left: 300px;">
+
+    <h1>Your entries</h1>
+
+  <p class="lead">
+  
+  [% FOREACH e IN entries %]
+  <div class="row hover_row" style="margin-bottom: 5px;">
+    <div class="span4">
+      [% e.title %]
+    </div>
+    <div class="span4">
+      <button id="button_[% e.id %]" class="btn">[% e.username %]</button>
+    </div>
+  </div>
+
+  <script>
+  $('#button_[% e.id %]').click(function() {
+    $.ajax({
+      url: "/password",
+      type: "post",
+      data: {
+        entry: [% e.id %]
+      },
+      success: function(data) {
+        window.prompt("[% e.title %] password for [% e.username %]", data['password']);
+      },
+      error: function() {
+        alert("Error while fetching the password.");
+      }
+    });
+  });
+  </script>
+  [% END %]
+
+  </p>
+  </div>

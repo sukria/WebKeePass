@@ -7,9 +7,11 @@
     <meta name="description" content="[% page_description %]">
     <meta name="author" content="Alexis Sukrieh">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="/js/jquery.min.js"></script>
 
     <!-- Le styles -->
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 40px;
@@ -45,11 +47,12 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="/">Database</a></li>
+              [% IF session.entries %]<li><a href="/signout" title="Lock the database">Exit</a></li>[% END %]
               <li><a href="/about">About</a></li>
             </ul>
             [% IF need_unlocking %]
             <form method="post" action="/keepass" class="navbar-form pull-right">
-              <input class="span2" type="password" name="password" placeholder="Password">
+              <input id="pwd_input" class="span2" type="password" name="password" placeholder="Password">
               <button type="submit" class="btn">Unlock</button>
             </form>
             [% END %]
@@ -67,19 +70,10 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/bootstrap/js/jquery.js"></script>
-    <script src="/bootstrap/js/bootstrap-transition.js"></script>
-    <script src="/bootstrap/js/bootstrap-alert.js"></script>
-    <script src="/bootstrap/js/bootstrap-modal.js"></script>
-    <script src="/bootstrap/js/bootstrap-dropdown.js"></script>
-    <script src="/bootstrap/js/bootstrap-scrollspy.js"></script>
-    <script src="/bootstrap/js/bootstrap-tab.js"></script>
-    <script src="/bootstrap/js/bootstrap-tooltip.js"></script>
-    <script src="/bootstrap/js/bootstrap-popover.js"></script>
-    <script src="/bootstrap/js/bootstrap-button.js"></script>
-    <script src="/bootstrap/js/bootstrap-collapse.js"></script>
-    <script src="/bootstrap/js/bootstrap-carousel.js"></script>
-    <script src="/bootstrap/js/bootstrap-typeahead.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 
+  <script>
+    $('#pwd_input').focus();
+  </script>
   </body>
 </html>
