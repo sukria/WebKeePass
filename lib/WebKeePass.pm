@@ -24,7 +24,10 @@ sub flash {
 }
 
 get '/' => sub {
-    template 'unlock', { title => "Unlock", flash => flash() };
+    template 'unlock', { 
+        title => "Unlock", 
+        need_unlocking => 1,
+        flash => flash() };
 };
 
 post '/keepass' => sub {

@@ -1,16 +1,24 @@
      
-      <form method="post" action="/keepass" class="form-signin">
- 
       [% IF flash %]
       <div class="alert alert-error">
       [% flash %]
       </div>
       [% END %]
 
-        <h2 class="form-signin-heading">KeePass</h2>
-        <input name="password" type="password" class="input-block-level" placeholder="Password">
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        <button class="btn btn-large btn-primary" type="submit">Unlock</button>
-      </form>
+
+   <div class="hero-unit" style="height: 220px; background: url(/images/keepass_logo.png) no-repeat top left; margin-top:30px; padding-left: 300px;">
+      <h1>WebKeePass [% version %]</h1>
+      <p>
+        You need to open your database first, fill-in your master password in the upper-right form for that.
+      </p> 
+    </div>
+
+    <hr>
+
+    <p>
+      Your password won't be stored anywhere, neither in this application's session nor in your cookies, it will open a
+      view with your DB's content (including your passwords).
+    </p>
+    <p>
+      This window will close itself automatically after 5 minutes.
+    </p>
