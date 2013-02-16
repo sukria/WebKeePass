@@ -17,8 +17,7 @@
 
     <p>
       Your password won't be stored anywhere, neither in this application's session nor in your cookies, it will open a
-      view with your DB's content (including your passwords).
+      view with your DB's entries. The passwords will be fetched on-demand via an Ajax request, if the session is still
+      opened.
     </p>
-    <p>
-      This window will close itself automatically after 5 minutes.
-    </p>
+
