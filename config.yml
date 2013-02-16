@@ -6,6 +6,11 @@ template: "template_toolkit"
 layout: "main"
 
 engines:
+  session:
+    Simple:
+      cookie_duration: 300 # the session is opened for 5 minutes
+      cookie_name: "webkeepass.session"
+
   template:
     template_toolkit:
       ENCODING: 'utf-8'
