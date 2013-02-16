@@ -2,7 +2,15 @@
    <div class="page-header" 
         style="height: 320px; background: url(/images/keepass_logo.png) no-repeat top left; margin-top:30px; padding-left: 300px;">
 
-    <h1>Your entries</h1>
+  <div class="page-header">
+    <h1>[% stats.name %] <small>[% stats.generator %] [% stats.version %]</small></h1>
+  
+    <div style="color: #bbc">
+      <div> Last modification: [% stats.last_modified %]</div>
+      <div>Master key changed: [% stats.key_updated_at %]</div>
+      <div>Encription/Cipher: [% stats.encoding %]/[% stats.cipher %]</div> 
+    </div>
+  </div>
 
   <p class="lead">
   

@@ -86,7 +86,7 @@ sub _build_entries {
         }
     }
 
-    return \@entries;
+    return [ sort { $a->{title} cmp $b->{title} } @entries ];
 }
 
 

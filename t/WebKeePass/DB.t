@@ -21,22 +21,16 @@ my $entries = $db->entries;
 is_deeply $entries,
   [
     {
-        id       => 1,
-        title    => 'Google Account',
-        username => 'johnnywalker@gmail.com',
-        password => 'ph32IklTK93ceV5TRe2U'
-    },
-    {
-        id       => 2,
-        title    => 'Twitter',
-        username => 'johnnywalker',
-        password => 'HmiEBZMBGeMDTAvFMVKE'
-    },
-    {
         id       => 3,
         title    => 'Facebook',
         username => 'johnny.walker',
         password => 'cvVYIICJ0qz5MIFiu5yd'
+    },
+    {
+        id       => 1,
+        title    => 'Google Account',
+        username => 'johnnywalker@gmail.com',
+        password => 'ph32IklTK93ceV5TRe2U'
     },
     {
         id       => 4,
@@ -50,6 +44,13 @@ is_deeply $entries,
         username => 'Michael321',
         password => '12345',
     },
+    {
+        id       => 2,
+        title    => 'Twitter',
+        username => 'johnnywalker',
+        password => 'HmiEBZMBGeMDTAvFMVKE'
+    },
+
   ],
   "Entries are fetched";
 

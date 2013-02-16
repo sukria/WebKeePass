@@ -24,6 +24,12 @@ sub flash {
     }
 }
 
+hook before_template_render => sub {
+    my ($tokens) = @_;
+    $tokens->{entries} = session('entries');
+    $tokens->{stats} = session('stats');
+};
+
 get '/' => sub {
     if (defined session('entries')) {
         return redirect '/keepass';
@@ -50,10 +56,10 @@ post '/keepass' => sub {
         return redirect '/';
     }
 
-    my $entries = $keepass->entries;
-    session entries => $entries;
+    session entries => $keepass->entries;
+    session stats   => $keepass->stats;
 
-    template 'keepass' => { entries => $entries };
+    template 'keepass';
 };
 
 get '/keepass' => sub {
