@@ -28,6 +28,7 @@ hook before_template_render => sub {
     my ($tokens) = @_;
     $tokens->{entries} = session('entries');
     $tokens->{stats} = session('stats');
+    $tokens->{flash} = flash(),
 };
 
 get '/' => sub {
@@ -35,10 +36,7 @@ get '/' => sub {
         return redirect '/keepass';
     }
 
-    template 'unlock', { 
-        title => "Unlock", 
-        need_unlocking => 1,
-        flash => flash() };
+    template 'unlock', { title => "Home" }; 
 };
 
 post '/keepass' => sub {
@@ -59,7 +57,7 @@ post '/keepass' => sub {
     session entries => $keepass->entries;
     session stats   => $keepass->stats;
 
-    template 'keepass';
+    redirect '/keepass';
 };
 
 get '/keepass' => sub {
@@ -67,7 +65,9 @@ get '/keepass' => sub {
         flash('You need to unlock the database first');
         return redirect '/';
     }
-    template 'keepass' => { entries => session('entries') };
+    template 'keepass' => { 
+        title => session('stats')->{'name'} 
+    };
 };
 
 get '/signout' => sub {
