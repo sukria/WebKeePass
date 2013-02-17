@@ -50,7 +50,7 @@
               [% IF session.entries %]<li><a href="/signout" title="Lock the database">Exit</a></li>[% END %]
               <li><a href="/about">About</a></li>
             </ul>
-            [% IF need_unlocking %]
+            [% IF ! session.entries %]
             <form method="post" action="/keepass" class="navbar-form pull-right">
               <input id="pwd_input" class="span2" type="password" name="password" placeholder="Password">
               <button type="submit" class="btn">Unlock</button>

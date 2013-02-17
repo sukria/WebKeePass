@@ -89,7 +89,6 @@ sub _build_entries {
     return [ sort { $a->{title} cmp $b->{title} } @entries ];
 }
 
-
 =attr stats
 
 HashRef with stats info about the DB file
@@ -111,14 +110,14 @@ sub _build_stats {
     my $last_modified = $dt->ymd('-').' '.$dt->hms(':');
     
     return {
-        version => $raw->{version},
-        generator => $raw->{generator},
-        name    => $raw->{database_name},
+        version        => $raw->{version},
+        generator      => $raw->{generator},
+        name           => $raw->{database_name},
         key_updated_at => $raw->{master_key_changed},
-        last_modified => $last_modified,
-        encoding => $raw->{enc_type},
-        cipher => $raw->{cipher},
-        entries => scalar(@{ $self->entries }),
+        last_modified  => $last_modified,
+        encoding       => $raw->{enc_type},
+        cipher         => $raw->{cipher},
+        entries        => scalar( @{ $self->entries } ),
     };
 }
 
