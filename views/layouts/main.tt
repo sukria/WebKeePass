@@ -11,6 +11,8 @@
 
     <!-- Le styles -->
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
     <link href="/css/style.css" rel="stylesheet">
     <style type="text/css">
       body {
@@ -46,11 +48,13 @@
           <a class="brand" href="/">WebKeePass [% version %]</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Database</a></li>
-              [% IF session.entries %]<li><a href="/signout" title="Lock the database">Exit</a></li>[% END %]
-              <li><a href="/about">About</a></li>
+              <li [% if request.path == '/keepass' %]class="active"[% END %]><a href="/keepass">Database</a></li>
             </ul>
-            [% IF ! session.entries %]
+            [% IF session.entries %]
+            <p class="navbar-text pull-right">
+              <a class="navbar-link" href="/signout" title="Lock the database">Exit</a>
+            </p>
+            [% ELSE %]
             <form method="post" action="/keepass" class="navbar-form pull-right">
               <input id="pwd_input" class="span2" type="password" name="password" placeholder="Password">
               <button type="submit" class="btn">Unlock</button>
@@ -61,11 +65,24 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <img style="margin: auto; width: 250px; margin-top: 20px;" class="visible-desktop" src="/images/keepass_logo.png" alt="KeePass logo" />
+        </div>
+        <div class="span9" style="padding-left: 10px;">
+ 
+          [% IF flash %]
+          <div class="alert alert-error" style="margin-top: 1em;">
+            [% flash %]
+          </div>
+          [% END %]
 
-[% content %]
+          [% content %]
 
-    </div> <!-- /container -->
+        </div>
+      </div> <!-- /row-fluid -->
+    </div> <!-- /container-fluid -->
 
     <!-- Le javascript
     ================================================== -->

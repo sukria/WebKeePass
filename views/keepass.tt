@@ -1,47 +1,41 @@
-
-   <div class="page-header" 
-        style="height: 320px; background: url(/images/keepass_logo.png) no-repeat top left; margin-top:30px; padding-left: 300px;">
-
-  <div class="page-header">
-    <h1>[% stats.name %] <small>[% stats.generator %] [% stats.version %]</small></h1>
+<div class="jumbotron" style="margin-bottom: 1em;">
+  <h1>[% stats.name %] <small>[% stats.generator %] [% stats.version %]</small></h1>
   
-    <div style="color: #bbc">
-      <div> Last modification: [% stats.last_modified %]</div>
-      <div>Master key changed: [% stats.key_updated_at %]</div>
-      <div>Encription/Cipher: [% stats.encoding %]/[% stats.cipher %]</div> 
-    </div>
+  <div style="color: #aaa; background-color: #eee;"> 
+    <div>Last modification: [% stats.last_modified %]</div>
+    <div>Master key changed: [% stats.key_updated_at %]</div>
+    <div>Encription/Cipher: [% stats.encoding %]/[% stats.cipher %]</div> 
   </div>
+</div>
 
-  <p class="lead">
-  
-  [% FOREACH e IN entries %]
-  <div class="row hover_row" style="margin-bottom: 5px;">
-    <div class="span4">
-      [% e.title %]
-    </div>
-    <div class="span4">
-      <button id="button_[% e.id %]" class="btn">[% e.username %]</button>
-    </div>
+[% FOREACH e IN entries %]
+<div class="row" style="margin-left: 0.3em; border-bottom: 1px solid #eee; margin-bottom: 0.5em;">
+  <div class="span3">
+    <h4 style="margin: 0;">[% e.title %]</h4>
   </div>
+  <div class="span3">
+    [% e.username %]
+  </div>
+  <div class="span3" style="">
+    <button id="button_[% e.id %]" title="Get the password">Password</button>
+  </div>
+</div>
 
-  <script>
-  $('#button_[% e.id %]').click(function() {
-    $.ajax({
-      url: "/password",
-      type: "post",
-      data: {
-        entry: [% e.id %]
-      },
-      success: function(data) {
-        window.prompt("[% e.title %] password for [% e.username %]", data['password']);
-      },
-      error: function() {
-        alert("Error while fetching the password.");
-      }
-    });
+<script>
+$('#button_[% e.id %]').click(function() {
+  $.ajax({
+    url: "/password",
+    type: "post",
+    data: {
+      entry: [% e.id %]
+    },
+    success: function(data) {
+      window.prompt("[% e.title %] password for [% e.username %]", data['password']);
+    },
+    error: function() {
+      alert("Error while fetching the password.");
+    }
   });
-  </script>
-  [% END %]
-
-  </p>
-  </div>
+});
+</script>
+[% END %]
