@@ -11,6 +11,8 @@ use Moo;
 use Carp 'croak'; 
 use File::KeePass;
 use DateTime;
+use Data::Dumper;
+use Digest::SHA1 'sha1_hex';
 
 =attr db_file 
 
@@ -49,7 +51,6 @@ sub load_db {
     $self->keepass->unlock;
 }
 
-
 =attr entries
 
 Retreive all the entries in the DB that have a title, a username and a password
@@ -62,31 +63,64 @@ has entries => (
     builder => '_build_entries',
 );
 
-sub _build_entries {
-    my ($self) = @_;
-
-    my $groups = $self->keepass->groups;
+sub _parse_entries {
+    my ( $self, $data ) = @_;
+    my $entries = $data || [];
     my @entries;
 
-    my $count = 0;
-    foreach my $group (map { $_->{groups} || [$_] } @{ $groups }) {
-        foreach my $entry (map { @{ $_->{entries} || [] } } @{ $group }) {
+    foreach my $entry ( @{$entries} ) {
+        my ( $title, $username, $password ) =
+          ( $entry->{title}, $entry->{username}, $entry->{password} );
 
-            my ( $title, $username, $password ) =
-              ( $entry->{title}, $entry->{username}, $entry->{password} );
+        push @entries,
+          {
+            id       => sha1_hex($title . $username . $password ),
+            title    => $title,
+            username => $username,
+            password => $password,
+          }
+          if defined $title && defined $username && defined $password;
+    }
+    return \@entries;
+}
 
-            push @entries,
-              {
-                id       => ++$count,
-                title    => $title,
-                username => $username,
-                password => $password,
-              }
-              if defined $title && defined $username && defined $password;
-        }
+sub _build_entries {
+    my ($self) = @_;
+    my $groups = $self->_parse_group( $self->keepass->groups );
+#    print Dumper($groups);
+    return $groups;
+}
+
+sub _parse_group {
+    my ($self, $data) = @_;
+    my $groups = [];
+
+    foreach my $item ( @{ $data } ) {
+        my $entries = $self->_parse_entries( $item->{entries} );
+
+        push @{$groups},
+          {
+            title   => $item->{title},
+            #icon    => $item->{icon},
+            entries => $entries,
+            group   => $self->_parse_group( $item->{groups} ),
+          };
     }
 
-    return [ sort { $a->{title} cmp $b->{title} } @entries ];
+    return $groups;
+}
+
+sub _count_entries {
+    my ($self, $entries) = @_;
+    my $count = 0;
+    $entries ||= $self->entries;
+
+    for my $e (@{ $entries }) {
+        $count += scalar @{ $e->{entries} };
+        $count += $self->_count_entries( $e->{group} );
+    }
+
+    return $count;
 }
 
 =attr stats
@@ -117,7 +151,7 @@ sub _build_stats {
         last_modified  => $last_modified,
         encoding       => $raw->{enc_type},
         cipher         => $raw->{cipher},
-        entries        => scalar( @{ $self->entries } ),
+        entries        => $self->_count_entries,
     };
 }
 
