@@ -56,17 +56,42 @@ post '/keepass' => sub {
 
     session entries => $keepass->entries;
     session stats   => $keepass->stats;
+    my $title = $keepass->entries->[0]->{title};
 
-    redirect '/keepass';
+    redirect "/keepass/$title";
 };
 
-get '/keepass' => sub {
+get '/keepass/**' => sub {
     if (! defined session('entries')) {
-        flash('You need to unlock the database first');
+        flash('You need to unlock the database to access this page.');
         return redirect '/';
     }
+
+    my @splat = splat;
+    my $path = $splat[0];
+    my $db = session('entries');
+    my $group = WebKeePass::DB->get_group_by_path($db, @{ $path });
+
+
+    my $navbar = [];
+    my $prefix = '/keepass';
+    foreach my $path (@{ $path }) {
+        push @{ $navbar },
+          {
+            name => $path,
+            link => "$prefix/$path",
+          };
+        $prefix .= "$prefix/$path";
+    }
+
+    if (! defined $group) {
+        return send_error "Not Found", 404;
+    }
+
     template 'keepass' => { 
-        title => session('stats')->{'name'} 
+        title => session('stats')->{'name'},
+        tree => $group,
+        navbar => $navbar,
     };
 };
 
@@ -75,17 +100,9 @@ get '/signout' => sub {
     redirect '/';
 };
 
-sub entry_by_id {
-    my ($entries, $id) = @_;
-    for my $e (@{ $entries }) {
-        return $e if $e->{id} == $id;
-    }
-    return undef;
-}
-
 post '/password' => sub {
     my $id = param('entry');
-    my $entry = entry_by_id(session('entries'), $id);
+    my $entry = WebKeePass::DB->entry_by_id(session('entries'), $id);
     content_type 'application/json';
 
     if (! defined $entry) {

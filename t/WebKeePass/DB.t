@@ -39,20 +39,22 @@ is_deeply $entries, [
                     ],
                     group => [
                         {
-                            title => "Second",
-                            group => [],
+                            title   => "Second",
+                            group   => [],
                             entries => [
                                 {
-                                    title => "entry1",
+                                    title    => "entry1",
                                     password => 'PIKoUFbJpyCCpnC30E4E',
-                                    id => 'cf2808679f1d5b093f8c57f2694f0b9fb4009015',
+                                    id =>
+'cf2808679f1d5b093f8c57f2694f0b9fb4009015',
                                     username => "foo1",
                                 },
                                 {
-                                    title => "entry2",
+                                    title    => "entry2",
                                     password => "1C8zsCcZlSmxqArasLha",
                                     username => "foo2",
-                                    id => "efbc03b7128b5f69af88ad8c5d65b080c7f9950c",
+                                    id =>
+"efbc03b7128b5f69af88ad8c5d65b080c7f9950c",
                                 },
                             ],
                         },
@@ -85,9 +87,21 @@ is_deeply $entries, [
             ],
         },
 
-          ]
-      }
+    ]
+}
       ], "entries are parsed correclty";
+
+my $nested_group = WebKeePass::DB->get_group_by_path(
+    $entries, 'Test', 'Nested Groups');
+is $nested_group->{title}, "Nested Groups", 
+ 'Got group by Test/Nested Groups';
+
+my $second = WebKeePass::DB->get_group_by_path(
+    $entries, 'Test', 'Nested Groups', 'First');
+is $second->{title}, 'First', 'got group by Test/Nested Group/First';
+
+my $entry = WebKeePass::DB->entry_by_id($entries, 'd572701f5a6969f6c3e862981dbeff1f56addf82');
+is $entry->{username}, 'johnny.walker', "entry_by_id";
 
 is_deeply $db->stats,
   {
