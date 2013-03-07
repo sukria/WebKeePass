@@ -81,7 +81,7 @@ get '/keepass/**' => sub {
             name => $path,
             link => "$prefix/$path",
           };
-        $prefix .= "$prefix/$path";
+          $prefix .= "/$path";
     }
 
     if (! defined $group) {

@@ -12,18 +12,21 @@
 <a href="[% nav.link %]">[% nav.name %]</a> »
 [% END %]
 
-[% FOREACH group IN tree.group %]
-<div class="row" style="margin-left: 0.3em; border-bottom: 1px solid #eee; margin-bottom: 0.5em;">
+  [% FOREACH group IN tree.group %]
+  <div class="row" style="margin-left: 0.3em; border-bottom: 1px solid #eee; margin-bottom: 0.5em;">
 
-  <!-- Title -->
-  <div class="span9">
-  <h4 style="margin: 0;"><a href="[% request.path %]/[% group.title %]">[% group.title %]</a></h4>
-  </div>
+    <!-- Title -->
+    <div class="span9">
+    <h4 style="margin: 0;"><a href="[% request.path %]/[% group.title %]">[% group.title %]</a></h4>
+    </div>
 
-  <hr>
+   </div>
+  <!-- END rendering of a group -->
+  [% END %]
 
   <!-- entries -->
-  [% FOREACH e IN group.entries %]
+
+  [% FOREACH e IN tree.entries %]
   <div class="row">
     <div class="span1"></div>
     <div class="span3">[% e.title %]</div>
@@ -38,20 +41,18 @@
     $.ajax({
       url: "/password",
       type: "post",
-      data: {
+  data: {
         entry: '[% e.id %]'
       },
       success: function(data) {
         window.prompt("[% e.title %] password for [% e.username %]", data['password']);
       },
       error: function() {
-        alert("Error while fetching the password.");
+        alert("Session expired");
       }
     });
   });
   </script>
   [% END %]
 
-</div>
-<!-- END rendering of a group -->
-[% END %]
+
