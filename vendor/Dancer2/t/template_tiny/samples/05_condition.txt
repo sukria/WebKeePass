@@ -1,7 +1,0 @@
-World!
-Hello!
-Hello!
-Hello World!
-foo
-FOO
- 

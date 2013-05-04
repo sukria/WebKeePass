@@ -1,4 +1,0 @@
-Template selected.
-
-message: [% content %]
-status: [% status %]
