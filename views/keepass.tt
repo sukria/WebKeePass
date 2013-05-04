@@ -20,13 +20,11 @@
 </ul>
 
 <!-- The sub groups -->
-<ul>
 [% FOREACH g in group.group %]
-  <li>
+  <div>
     <a href="[% request.path %]/[% g.title %]">[% g.title %]</a>
-  </li>
+  </div>
 [% END %]
-</ul>
 
 <!-- The Entries -->
 [% FOREACH e IN group.entries %]

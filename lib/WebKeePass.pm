@@ -7,7 +7,7 @@ This loads all the application routes
 
 =cut
 
-use Dancer 2.0;
+use Dancer2;
 use Carp 'croak'; 
 use WebKeePass::DB;
 use Dancer::Plugin::Ajax;
@@ -72,11 +72,6 @@ get '/keepass/**' => sub {
     my $db = session('entries');
 
     my $group = WebKeePass::DB->get_group_by_path($db, @{ $path });
-
-use Data::Dumper;
-warn Dumper($group);
-warn "===> ".join(' / ', @$path);
-
 
     my $navbar = [];
     my $prefix = '/keepass';
