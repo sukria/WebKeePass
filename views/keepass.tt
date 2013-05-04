@@ -8,33 +8,36 @@
   </div>
 </div>
 
-[% FOREACH nav IN navbar %]
-<a href="[% nav.link %]">[% nav.name %]</a> »
-[% END %]
-
-  [% FOREACH group IN tree.group %]
-  <div class="row" style="margin-left: 0.3em; border-bottom: 1px solid #eee; margin-bottom: 0.5em;">
-
-    <!-- Title -->
-    <div class="span9">
-    <h4 style="margin: 0;"><a href="[% request.path %]/[% group.title %]">[% group.title %]</a></h4>
-    </div>
-
-   </div>
-  <!-- END rendering of a group -->
+<!-- The Breadcrumb -->
+<ul class="breadcrumb">
+  [% FOREACH link IN navbar %]
+    [% IF link.is_last %]
+      <li class="active">[% link.name %]</li>
+    [% ELSE %]
+      <li><a href="[% link.link %]">[% link.name %]</a> <span class="divider">/</span></li>
+    [% END %]
   [% END %]
+</ul>
 
-  <!-- entries -->
+<!-- The sub groups -->
+<ul>
+[% FOREACH g in group.group %]
+  <li>
+    <a href="[% request.path %]/[% g.title %]">[% g.title %]</a>
+  </li>
+[% END %]
+</ul>
 
-  [% FOREACH e IN tree.entries %]
-  <div class="row">
+<!-- The Entries -->
+[% FOREACH e IN group.entries %]
+<div class="row">
     <div class="span1"></div>
     <div class="span3">[% e.title %]</div>
     <div class="span2"> [% e.username %] </div>
     <div class="span3">
       <button id="button_[% e.id %]" title="Get the password">Password</button>
     </div>
-  </div>
+</div>
 
   <script>
   $('#button_[% e.id %]').click(function() {
@@ -53,6 +56,4 @@
     });
   });
   </script>
-  [% END %]
-
-
+[% END %]

@@ -1,1 +1,52 @@
+<!-- The Breadcrumb -->
+<ul class="breadcrumb">
+  [% FOREACH link IN navbar %]
+    [% IF link.is_last %]
+      <li class="active">[% link.name %]</li>
+    [% ELSE %]
+      <li><a href="[% link.link %]">[% link.name %]</a> <span class="divider">/</span></li>
+    [% END %
+  [% END %]
+</ul>
 
+<!-- The Title -->
+<h2>[% group.title %]</h2>
+
+<!-- The sub groups -->
+<ul>
+[% FOREACH group in group.group %]
+  <li>
+    <a href="[% request.path %]/[% group.title %]">[% group.title %]</a>
+  </li>
+[% END %]
+</ul>
+
+<!-- The Entries -->
+[% FOREACH e IN group.entries %]
+<div class="row">
+    <div class="span1"></div>
+    <div class="span3">[% e.title %]</div>
+    <div class="span2"> [% e.username %] </div>
+    <div class="span3">
+      <button id="button_[% e.id %]" title="Get the password">Password</button>
+    </div>
+</div>
+
+  <script>
+  $('#button_[% e.id %]').click(function() {
+    $.ajax({
+      url: "/password",
+      type: "post",
+  data: {
+        entry: '[% e.id %]'
+      },
+      success: function(data) {
+        window.prompt("[% e.title %] password for [% e.username %]", data['password']);
+      },
+      error: function() {
+        alert("Session expired");
+      }
+    });
+  });
+  </script>
+[% END %]

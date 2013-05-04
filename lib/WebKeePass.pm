@@ -70,7 +70,12 @@ get '/keepass/**' => sub {
     my @splat = splat;
     my $path = $splat[0];
     my $db = session('entries');
+
     my $group = WebKeePass::DB->get_group_by_path($db, @{ $path });
+
+use Data::Dumper;
+warn Dumper($group);
+warn "===> ".join(' / ', @$path);
 
 
     my $navbar = [];
@@ -83,14 +88,15 @@ get '/keepass/**' => sub {
           };
           $prefix .= "/$path";
     }
+    $navbar->[-1]->{is_last} = 1;
 
     if (! defined $group) {
         return send_error "Not Found", 404;
     }
 
-    template 'keepass' => { 
-        title => session('stats')->{'name'},
-        tree => $group,
+    template 'keepass' => {
+        title  => session('stats')->{'name'},
+        group  => $group,
         navbar => $navbar,
     };
 };
