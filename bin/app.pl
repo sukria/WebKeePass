@@ -13,6 +13,6 @@ BEGIN {
     }
 }
 
-use Dancer 2.0;
+use Dancer2;
 use WebKeePass;
 dance;
