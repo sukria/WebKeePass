@@ -123,6 +123,43 @@ sub _count_entries {
     return $count;
 }
 
+sub get_group_by_path {
+    my ($self, $tree, @path) = @_;
+    my $buffer_tree = $tree;
+    my $found;
+
+    while (my $name = shift @path) {
+        undef $found;
+
+        foreach my $group ( @{$buffer_tree} ) {
+            if ( $group->{title} eq $name ) {
+                $found = $group;
+                $buffer_tree = $found->{group};
+                last;
+            }
+        }
+        return undef if ! defined $found;
+    }
+
+    # here, buffer_tree is at the the level we want, and all part of paths have been
+    # found successively
+    return $found;
+}
+
+sub entry_by_id {
+    my ( $class, $entries, $id ) = @_;
+
+    foreach my $group ( @{$entries} ) {
+        foreach my $item ( @{ $group->{entries} } ) {
+            return $item if $item->{id} eq $id;
+        }
+        my $found = $class->entry_by_id( $group->{group}, $id );
+        return $found if defined $found;
+    }
+
+    return undef;
+}
+
 =attr stats
 
 HashRef with stats info about the DB file
