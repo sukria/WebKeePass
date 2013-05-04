@@ -10,7 +10,7 @@ This loads all the application routes
 use Dancer2;
 use Carp 'croak'; 
 use WebKeePass::DB;
-use Dancer::Plugin::Ajax;
+use Dancer2::Plugin::Ajax;
 
 sub flash {
     my ($message) = @_;
