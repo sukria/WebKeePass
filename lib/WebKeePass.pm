@@ -39,7 +39,21 @@ get '/' => sub {
     template 'unlock', { title => "Home" }; 
 };
 
+get '/fingerprint' => sub {
+    template 'fingerprint';
+};
+
 post '/keepass' => sub {
+
+    # The fingerprint must be provided and be authorized
+    my $known_fingerprints = config->{'application'}->{'fingerprints'};
+    if (! $known_fingerprints->{param('fingerprint')}) {
+        debug "param fp : ".param('fingerprint').to_dumper(config->{'application'});
+        flash "Your device is not allowed to access the keyring";
+        return redirect '/';
+    }
+
+    # The password must unlock the database
     my $password = param('password');
     if (! $password) {
         flash "Please provide the master password of the database";
@@ -101,7 +115,7 @@ get '/signout' => sub {
     redirect '/';
 };
 
-post '/password' => sub {
+ajax '/password' => sub {
     my $id = param('entry');
     my $entry = WebKeePass::DB->entry_by_id(session('entries'), $id);
     content_type 'application/json';
@@ -114,5 +128,7 @@ post '/password' => sub {
     status 200;
     to_json({password => $entry->{password}});
 };
+
+# This route receives a fingerprint and saves it in session
 
 1;

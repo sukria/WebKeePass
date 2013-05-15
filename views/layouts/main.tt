@@ -8,6 +8,7 @@
     <meta name="author" content="Alexis Sukrieh">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/fp.js"></script>
 
     <!-- Le styles -->
     <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -55,11 +56,18 @@
               <a class="navbar-link" href="/signout" title="Lock the database">Exit</a>
             </p>
             [% ELSE %]
-            <form method="post" action="/keepass" class="navbar-form pull-right">
-              <input id="pwd_input" class="span2" type="password" name="password" placeholder="Password">
-              <button type="submit" class="btn">Unlock</button>
-            </form>
-            [% END %]
+              <form method="post" id="unlock_form" action="/keepass" class="navbar-form pull-right">
+                <input type="hidden" id="fingerprint_field" name="fingerprint" />
+                <input id="pwd_input" class="span2" type="password" name="password" placeholder="Password">
+                <button type="submit" id="unlock_button" class="btn">Unlock</button>
+              </form>
+
+              <script type="text/javascript">
+              $('#unlock_form').submit(function(){
+                document.getElementById('fingerprint_field').value = FingerPrint.get();
+              });
+              </script>
+           [% END %]
           </div><!--/.nav-collapse -->
         </div>
       </div>

@@ -1,0 +1,10 @@
+<h2>Device Fingerprint</h2>
+
+Your device has the following fingerprint: 
+
+<pre>
+<script>
+document.write(FingerPrint.get());
+</script>
+</pre>
+
