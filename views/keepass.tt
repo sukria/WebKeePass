@@ -30,11 +30,24 @@
 [% FOREACH e IN group.entries %]
 <div class="row">
     <div class="span1"></div>
-    <div class="span3">[% e.title %]</div>
+    <div class="span3">
+      [% IF e.url %]
+        <a href="[% e.url %]" target="_webkeepass_link">[% e.title %]</a>
+      [% ELSE %]
+        [% e.title %]
+      [% END %]
+    </div>
     <div class="span2"> [% e.username %] </div>
     <div class="span3">
       <button id="button_[% e.id %]" title="Get the password">Password</button>
     </div>
+</div>
+<div class="row">
+  <div class="span1">
+  </div>
+  <div class="span8">
+    <em>[% e.comment %]</em>
+  </div>
 </div>
 
   <script>

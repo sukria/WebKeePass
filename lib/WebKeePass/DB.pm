@@ -13,6 +13,7 @@ use File::KeePass;
 use DateTime;
 use Data::Dumper;
 use Digest::SHA1 'sha1_hex';
+use Encode 'encode';
 
 =attr db_file 
 
@@ -69,18 +70,25 @@ sub _parse_entries {
     my @entries;
 
     foreach my $entry ( @{$entries} ) {
-        my ( $title, $username, $password ) =
-          ( $entry->{title}, $entry->{username}, $entry->{password} );
 
-        push @entries,
-          {
-            id       => sha1_hex($title . $username . $password ),
-            title    => $title,
-            username => $username,
-            password => $password,
-          }
-          if defined $title && defined $username && defined $password;
+        my $e = {
+            id => sha1_hex(
+                    encode( 'UTF-8', $entry->{title} || '')
+                  . encode( 'UTF-8', $entry->{username} || '')
+                  . encode( 'UTF-8', $entry->{password} || '')
+            )
+        };
+        my @fields = qw(title username password comment url);
+        map { $e->{$_} = $entry->{$_}} @fields;
+
+        push @entries, $e
+          if defined $e->{title} && 
+             defined $e->{username} && 
+             defined $e->{password};
     }
+
+    #use Data::Dumper;
+    #warn Dumper(\@entries);
     return \@entries;
 }
 
