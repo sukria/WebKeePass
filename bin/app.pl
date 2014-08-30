@@ -8,6 +8,7 @@ use warnings;
 BEGIN {
     use FindBin;
 
+    unshift @INC, glob("${FindBin::Bin}/../lib");
     while ( my $libdir = glob("${FindBin::Bin}/../vendor/*/lib") ) {
         unshift @INC, $libdir;
     }
