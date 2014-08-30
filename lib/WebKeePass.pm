@@ -97,7 +97,7 @@ get '/keepass/**' => sub {
 };
 
 get '/signout' => sub {
-    context->destroy_session;
+    app->destroy_session;
     redirect '/';
 };
 
