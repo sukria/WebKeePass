@@ -1,3 +1,9 @@
+${{NEXT}}
+
+    * Dancer2 compat change: don't use 'context' anymore, but 'app'
+    * Removed useless and bogus 'Database' link in main layout
+    * Add local ./lib to @INC in bin/app.pl
+
 1.0
 
     * First release
