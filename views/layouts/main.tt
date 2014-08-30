@@ -48,7 +48,7 @@
           <a class="brand" href="/">WebKeePass [% version %]</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li [% if request.path == '/keepass' %]class="active"[% END %]><a href="/keepass">Database</a></li>
+            <!-- menu bar items could come here, none for now -->
             </ul>
             [% IF session.entries %]
             <p class="navbar-text pull-right">
